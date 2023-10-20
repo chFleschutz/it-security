@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <algorithm>
 #include <iostream>
-
+#include <iomanip>
 
 /**
  ** Returns the number of leading zeroes of the given argument.
@@ -132,7 +132,7 @@ void freeLargeInt(LargeInt* x)
 LargeInt* Add(LargeInt* s1, LargeInt* s2)
 {
 	int largerWordSize = std::max(s1->usedWords, s2->usedWords);
-	LargeInt* result = InitLargeIntWithUint32(0, largerWordSize);
+	LargeInt* result = InitLargeIntWithUint32(0, largerWordSize + 1);
 
 	int bits = 0;
 	uint32 overflow = 0;
@@ -153,7 +153,13 @@ LargeInt* Add(LargeInt* s1, LargeInt* s2)
 		overflow = overflow >> BITSPERWORD;
 		bits += BITSPERWORD;
 	}
-	//Todo: check for overflow on last word
+
+	//Check for overflow on last word
+    if (overflow != 0)
+	{
+		result->data[largerWordSize] = overflow;
+		largerWordSize++;
+	}
 
 	// Check bits
 	auto zeros = BITSPERWORD - (32 - GetNumberOfLeadingZeroes(result->data[largerWordSize - 1]));
@@ -168,6 +174,7 @@ LargeInt* Add(LargeInt* s1, LargeInt* s2)
 void printLargeInt(LargeInt* x)
 {
 	int i = x->bitSize - 1;
+	std::string result{};
 	while (i >= 0)
 	{
 		int wordIndex = i / BITSPERWORD;
@@ -175,30 +182,42 @@ void printLargeInt(LargeInt* x)
 		uint32 testBit = 1 << bitIndex;
 		if ((x->data[wordIndex] & testBit) != 0)
 		{
-			printf("1");
+			result.append("1");
 		}
 		else
 		{
-			printf("0");
+			result.append("0");
 		}
 		i--;
 	}
-	printf("\n");
+	std::cout << result << "\n";
 }
 
+void visualizeOperation(LargeInt* first, LargeInt* second, LargeInt* result, char operation)
+{
+	int width = std::max({ first->bitSize, second->bitSize, result->bitSize }) + 2;
+
+	std::cout << std::setw(width) << std::right;
+	printLargeInt(first);
+
+	std::cout << std::left << operation << std::setw(width - 1) << std::right;
+	printLargeInt(second);
+
+	std::cout << std::setw(width) << std::setfill('-') << "" << std::setfill(' ') << std::endl;
+	std::cout << std::setw(width) << std::right;
+	printLargeInt(result);
+}
 
 
 // Verstehen Sie die untige main-Funktion bitte als Anstoß zum 
 // Testen Ihres Codes. Fügen Sie weitere, sinnvolle Tests hinzu!
 int main()
 {
-	LargeInt* x = InitLargeIntWithUint32(70000, 5);
-	x->bitSize++; // better checking in console
-	LargeInt* y = InitLargeIntWithUint32(80001, 5);
-	y->bitSize++; // better checking in console
-	printLargeInt(x);
-	printLargeInt(y);
-	LargeInt* z = Add(x, y);
-	printLargeInt(z);
+	auto x = InitLargeIntWithUint32(0b0100010001010, 5);
+	auto y = InitLargeIntWithUint32(0b1110001000100, 5);
+	auto z = Add(x, y);
+	
+	visualizeOperation(x, y, z, '+');
+	
 	return 0;
 }
