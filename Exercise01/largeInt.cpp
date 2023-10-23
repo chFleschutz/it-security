@@ -131,8 +131,8 @@ void freeLargeInt(LargeInt* x)
  **/
 LargeInt* Add(LargeInt* s1, LargeInt* s2)
 {
-	int largerWordSize = std::max(s1->usedWords, s2->usedWords);
-	LargeInt* result = InitLargeIntWithUint32(0, largerWordSize + 1);
+	int largerWordSize = std::max(s1->usedWords, s2->usedWords) + 1;
+	LargeInt* result = InitLargeIntWithUint32(0, largerWordSize);
 
 	int bits = 0;
 	uint32 overflow = 0;
@@ -149,27 +149,17 @@ LargeInt* Add(LargeInt* s1, LargeInt* s2)
 		result->data[i] = addResult & STANDARD_USEBIT_MASK;
 
 		// Calculate overflow
-		overflow = addResult & STANDARD_CALCBIT_MASK;
-		overflow = overflow >> BITSPERWORD;
+		overflow = addResult >> BITSPERWORD;
 		bits += BITSPERWORD;
 	}
 
-	//Check for overflow on last word
-    if (overflow != 0)
-	{
-		result->data[largerWordSize] = overflow;
-		largerWordSize++;
-	}
-
-	// Check bits
-	auto zeros = BITSPERWORD - (32 - GetNumberOfLeadingZeroes(result->data[largerWordSize - 1]));
-	bits -= zeros;
+	// Set bits to exclude leading zeroes
+	bits -= BITSPERWORD - (32 - GetNumberOfLeadingZeroes(result->data[largerWordSize - 1]));
 
 	result->usedWords = largerWordSize;
 	result->bitSize = bits;
 	return result;
 }
-
 
 void printLargeInt(LargeInt* x)
 {
@@ -213,8 +203,8 @@ void visualizeOperation(LargeInt* first, LargeInt* second, LargeInt* result, cha
 // Testen Ihres Codes. Fügen Sie weitere, sinnvolle Tests hinzu!
 int main()
 {
-	auto x = InitLargeIntWithUint32(0b0100010001010, 5);
-	auto y = InitLargeIntWithUint32(0b1110001000100, 5);
+	auto x = InitLargeIntWithUint32(1023, 2);
+	auto y = InitLargeIntWithUint32(1023, 2);
 	auto z = Add(x, y);
 	
 	visualizeOperation(x, y, z, '+');
