@@ -161,6 +161,31 @@ LargeInt* Add(LargeInt* s1, LargeInt* s2)
 	return result;
 }
 
+LargeInt* Multiply(const LargeInt* m1, const LargeInt* m2)
+{
+	auto result = InitLargeIntWithUint32(0, m1->usedWords + m2->usedWords);
+
+	for (int i = 0; i < m1->usedWords; i++)
+	{
+		for (int j = 0; j < m2->usedWords; j++)
+		{
+			uint32 mulRes = m1->data[i] * m2->data[j];
+			int index = i + j;
+			while (mulRes > 0)
+			{
+				uint32 current = result->data[index] + (mulRes & STANDARD_USEBIT_MASK);
+				result->data[index] = current & STANDARD_USEBIT_MASK;
+				mulRes += current & STANDARD_CALCBIT_MASK;
+				mulRes = mulRes >> BITSPERWORD;	
+				index++;
+			}
+		}
+	}
+
+	RecomputeUsageVariables(result);
+	return result;
+}
+
 void printLargeInt(LargeInt* x)
 {
 	int i = x->bitSize - 1;
@@ -205,9 +230,9 @@ int main()
 {
 	auto x = InitLargeIntWithUint32(1023, 2);
 	auto y = InitLargeIntWithUint32(1023, 2);
-	auto z = Add(x, y);
+	auto z = Multiply(x, y);
 	
-	visualizeOperation(x, y, z, '+');
+	visualizeOperation(x, y, z, '*');
 	
 	return 0;
 }
