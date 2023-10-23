@@ -132,12 +132,12 @@ void freeLargeInt(LargeInt* x)
  **/
 LargeInt* Add(LargeInt* s1, LargeInt* s2)
 {
-	int largerWordSize = std::max(s1->usedWords, s2->usedWords) + 1;
+	auto largerWordSize = std::max(s1->usedWords, s2->usedWords) + 1;
 	LargeInt* result = InitLargeIntWithUint32(0, largerWordSize);
 
-	int bits = 0;
+	uint32 bits = 0;
 	uint32 overflow = 0;
-	for (int i = 0; i < largerWordSize; i++)
+	for (uint32 i = 0; i < largerWordSize; i++)
 	{
 		// Add s1, s2 and overflow (check if s1/s2 still have data)
 		uint32 addResult = overflow;
@@ -167,7 +167,7 @@ LargeInt* Add(LargeInt* s1, LargeInt* s2)
 /// @param num Number to be added to base
 /// @param index Starting word for adding
 /// @return Same ptr to base
-LargeInt* Add(LargeInt* base, uint32 num, int index)
+LargeInt* Add(LargeInt* base, uint32 num, uint32 index)
 {
 	while (num > 0)
 	{
@@ -182,13 +182,17 @@ LargeInt* Add(LargeInt* base, uint32 num, int index)
 	return base;
 }
 
+/// @brief Multiplies m1 and m2 and returns the result
+/// @param m1 Pointer to the first operand
+/// @param m2 Pointer to the second operand
+/// @return Pointer to the new LargeInt with the multiplication result
 LargeInt* Multiply(const LargeInt* m1, const LargeInt* m2)
 {
 	auto result = InitLargeIntWithUint32(0, m1->usedWords + m2->usedWords);
 
-	for (int i = 0; i < m1->usedWords; i++)
+	for (uint32 i = 0; i < m1->usedWords; i++)
 	{
-		for (int j = 0; j < m2->usedWords; j++)
+		for (uint32 j = 0; j < m2->usedWords; j++)
 		{
 			uint32 mulRes = m1->data[i] * m2->data[j];
 			Add(result, mulRes, i + j);
@@ -221,6 +225,7 @@ void printLargeInt(LargeInt* x)
 	std::cout << result << "\n";
 }
 
+/// @brief Prints the LargeInts visualized like an operation for easy result checking
 void visualizeOperation(LargeInt* first, LargeInt* second, LargeInt* result, char operation)
 {
 	int width = std::max({ first->bitSize, second->bitSize, result->bitSize }) + 2;
@@ -247,5 +252,8 @@ int main()
 	
 	visualizeOperation(x, y, z, '*');
 	
+	freeLargeInt(x);
+	freeLargeInt(y);
+	freeLargeInt(z);
 	return 0;
 }
