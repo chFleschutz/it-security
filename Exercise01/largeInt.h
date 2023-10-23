@@ -65,4 +65,5 @@ extern boolean IsEven(const LargeInt* b);
 extern boolean IsOdd(const LargeInt* b);
 extern LargeInt* InitLargeIntWithUint32(uint32 value, uint8 wordSize);
 extern LargeInt* Add(LargeInt* s1, LargeInt* s2);
+extern LargeInt* Add(LargeInt* base, uint32 num, int index);
 extern LargeInt* Multiply(const LargeInt* m1, const LargeInt* m2);

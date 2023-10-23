@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
+#include <cassert>
 
 /**
  ** Returns the number of leading zeroes of the given argument.
@@ -161,6 +162,26 @@ LargeInt* Add(LargeInt* s1, LargeInt* s2)
 	return result;
 }
 
+/// @brief Adds num to the LargeInt beginning at index
+/// @param base LargeInt num should be added to
+/// @param num Number to be added to base
+/// @param index Starting word for adding
+/// @return Same ptr to base
+LargeInt* Add(LargeInt* base, uint32 num, int index)
+{
+	while (num > 0)
+	{
+		assert(index < base->wordSize && "Index out of Range make sure LargeInt can hold the addition");
+
+		uint32 addResult = base->data[index] + (num & STANDARD_USEBIT_MASK);
+		base->data[index] = addResult & STANDARD_USEBIT_MASK;	// Save usebits
+		num += addResult & STANDARD_CALCBIT_MASK;				// Add overflow
+		num = num >> BITSPERWORD;								// Shift to next word
+		index++;
+	}
+	return base;
+}
+
 LargeInt* Multiply(const LargeInt* m1, const LargeInt* m2)
 {
 	auto result = InitLargeIntWithUint32(0, m1->usedWords + m2->usedWords);
@@ -170,15 +191,7 @@ LargeInt* Multiply(const LargeInt* m1, const LargeInt* m2)
 		for (int j = 0; j < m2->usedWords; j++)
 		{
 			uint32 mulRes = m1->data[i] * m2->data[j];
-			int index = i + j;
-			while (mulRes > 0)
-			{
-				uint32 current = result->data[index] + (mulRes & STANDARD_USEBIT_MASK);
-				result->data[index] = current & STANDARD_USEBIT_MASK;
-				mulRes += current & STANDARD_CALCBIT_MASK;
-				mulRes = mulRes >> BITSPERWORD;	
-				index++;
-			}
+			Add(result, mulRes, i + j);
 		}
 	}
 
