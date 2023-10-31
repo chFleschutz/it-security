@@ -255,5 +255,5 @@ int main()
 	freeLargeInt(x);
 	freeLargeInt(y);
 	freeLargeInt(z);
-	return 0;
+	return EXIT_SUCCESS;
 }
