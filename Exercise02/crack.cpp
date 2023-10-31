@@ -245,10 +245,9 @@ int main()
 
 	// Configure
 	// =========================
-	auto usedAlphabet = lowerCaseAlphabet + numbers;
-	//auto hash = toHash("1word");
-	auto hash = convert160BitHash(hash1);
-
+	auto usedAlphabet = lowerCaseAlphabet;
+	auto hash = toHash("word");
+	//auto hash = convert160BitHash(hash2);
 	// =========================
 
 	// Print Information
@@ -259,8 +258,8 @@ int main()
 	auto begin = std::chrono::high_resolution_clock::now();
 
 	// Crack Password
-	//auto bruteforced = bruteForceCrack(hash, usedAlphabet);
-	auto bruteforced = dictCrack(hash, "dic-0294.txt");
+	auto bruteforced = bruteForceCrack(hash, usedAlphabet);
+	//auto bruteforced = dictCrack(hash, "dic-0294.txt");
 
 	auto end = std::chrono::high_resolution_clock::now();
 	std::cout << "Cracked Password: " << "\t" << bruteforced << std::endl;
