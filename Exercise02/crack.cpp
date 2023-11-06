@@ -169,6 +169,8 @@ uint32* toHash(const std::string& password)
 
 std::string bruteForceCrack(uint32* sha1Hash, const std::string& alphabet)
 {
+	assert(alphabet.size() > 0 && "Alphabet has to contain at least one character");
+
 	std::string passwordGuess = std::string(1, alphabet[0]);
 	std::vector<int> alphabetIndices = { 0 };
 
