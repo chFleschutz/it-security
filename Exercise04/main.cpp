@@ -29,6 +29,16 @@ int countChars(const std::string& path, std::map<char, int>& charCount)
 	return count;
 }
 
+int countCharsInString(const std::string& str, std::map<char, int>& charCount)
+{
+	for (const auto& c : str)
+	{
+		charCount[c]++;
+	}
+
+	return str.size();
+}
+
 void printResults(const std::map<char, int>& charCount, int maxChars)
 {
 	int width = 16;
@@ -66,11 +76,12 @@ void printResults(const std::map<char, int>& charCount, int maxChars)
 int main()
 {
 	std::string filePath = "text.txt";
-
 	std::map<char, int> charCount;
-	int maxChars = countChars(filePath, charCount);
+
+	int maxChars = 0;
+	maxChars = countChars(filePath, charCount);
+	//maxChars = countCharsInString("Bestandteil", charCount);
 
 	printResults(charCount, maxChars);
-
 	return EXIT_SUCCESS;
 }
