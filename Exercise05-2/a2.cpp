@@ -6,8 +6,15 @@ void evil() {
 
 void q() {
     // bitte modifizieren Sie nur im Bereich unterhalb dieser Zeile
-    
     // Toben Sie sich hier aus!
+    struct BadStruct
+    {
+        ~BadStruct()
+        {
+            evil();
+        }
+    };
+    BadStruct myBadStruct;
     
     // bitte modifizieren Sie nur im Bereich oberhalb dieser Zeile
     printf("q is done \n");
