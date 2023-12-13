@@ -1,3 +1,4 @@
+import java.security.SecureRandom;
 
 public class OneTimePad {
     /**
@@ -8,7 +9,7 @@ public class OneTimePad {
      * zu {@link #getStringForm(String)}. 
      */
     public static byte[] getBinaryForm(String s) {
-        // Bitte implementieren!
+        return s.getBytes();
     }
     
     /**
@@ -19,14 +20,21 @@ public class OneTimePad {
      * zu {@link #getBinaryForm(String)}. 
      */
     public static String getStringForm(byte[] c) {
-        // Bitte implementieren!
+        return new String(c);
     }
     
     /**
      * Produziert ein (pseudo-)zufälliges Array von bytes mit der gegebenen Länge. 
      */
     public static byte[] getRandomKey(int length) {
-        // Bitte implementieren!
+        // Create a SecureRandom instance for secure random number generation
+        SecureRandom secureRandom = new SecureRandom();
+
+        // Generate a random byte array of the specified length
+        byte[] randomKey = new byte[length];
+        secureRandom.nextBytes(randomKey);
+
+        return randomKey;
     }
     
     /**
@@ -38,7 +46,13 @@ public class OneTimePad {
      * übereinstimmen. 
      */
     public static byte[] encode(byte[] msg, byte[] key) {
-        // Bitte implementieren!
+        byte[] encodedMessage = new byte[msg.length];
+        
+        for (int i = 0; i < msg.length; i++) {
+            encodedMessage[i] = (byte) (msg[i] ^ key[i]);
+        }
+
+        return encodedMessage;
     }
     
     /**
@@ -50,7 +64,7 @@ public class OneTimePad {
      * übereinstimmen. 
      */
     public static byte[] decode(byte[] chiffre, byte[] key) {
-        // Bitte implementieren!
+        return encode(chiffre, key);
     }
     
     /**
@@ -59,22 +73,34 @@ public class OneTimePad {
      * repräsentiert (auch die führenden 0-en!).
      */
     public static String toBinaryString(byte[] buf) {
-        // Bitte implementieren!
+        StringBuilder binaryStringBuilder = new StringBuilder();
+
+        for (byte b : buf) {
+            // Convert each byte to its binary representation
+            String binaryString = String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0');
+            
+            // Append the binary representation to the StringBuilder
+            binaryStringBuilder.append(binaryString);
+        }
+
+        return binaryStringBuilder.toString();
     }
     
     public static void testBasics() {
-        String klartext = "grüß die oma";
+        String klartext = "helloworld";
+
         byte[] m = getBinaryForm(klartext);
         System.out.println("Klartext                     : " + klartext);
         System.out.println("Klartext (binär)             : " + toBinaryString(m));
         byte[] k = getRandomKey(m.length);
         System.out.println("Schlüssel                    : " + toBinaryString(k));
+
         byte[] c = encode(m, k);
         System.out.println("Chiffretext (binär)          : " + toBinaryString(c));
         System.out.println("Chiffretext                  : " + getStringForm(c));
+
         byte[] decoded = decode(c, k);
         System.out.println("Decodierter Klartext (binär) : " + toBinaryString(decoded));
-        System.out.println(getStringForm(decoded));
         System.out.println("Decodierter Klartext         : " + getStringForm(decoded));        
     }
     
