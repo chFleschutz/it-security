@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <chrono>
 
 int32_t gcd(int32_t a, int32_t b)
 {
@@ -7,6 +8,18 @@ int32_t gcd(int32_t a, int32_t b)
 		return a;
 
 	return gcd(b, a % b);
+}
+
+int32_t gcdIterative(int32_t a, int32_t b)
+{
+	while (b != 0)
+	{
+		auto tmp = b;
+		b = a % b;
+		a = tmp;
+	}
+
+	return a;
 }
 
 int main()
@@ -49,14 +62,18 @@ int main()
 	auto colorRed = "\x1B[31m";
 	auto defaultColor = "\033[0m";
 
-	std::cout << "Test cases for gcd(a, b):" << std::endl;
+	std::cout << "Test cases for euclidean algorithm:" << std::endl;
 	std::cout << "a\t b\t -> result \texpected" << std::boolalpha << std::endl;
 	std::cout << "------------------------------------------------" << std::endl;
 
 	int casesPassed = 0;
+	auto begin = std::chrono::high_resolution_clock::now();
+	
 	for (const auto& test : testCases)
 	{
 		auto result = gcd(test.a, test.b);
+		//casesPassed += result == test.expected; // uncomment this and comment the rest in this loop to disable console output
+
 		auto color = colorRed;
 		if (result == test.expected)
 		{
@@ -67,6 +84,11 @@ int main()
 		std::cout << color << test.a << "\t " << test.b << "\t -> " << result << " \t" << test.expected << defaultColor << std::endl;
 	}
 
+	auto end = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+
 	auto color = casesPassed == testCases.size() ? colorGreen : colorRed;
-	std::cout << std::endl << color << "Passed " << casesPassed << " of " << testCases.size() << " test cases." << defaultColor << std::endl;
+	std::cout << color << std::endl;
+	std::cout << "Passed " << casesPassed << " of " << testCases.size() << " test cases (Time " << duration << ")";
+	std::cout << defaultColor << std::endl;
 }
