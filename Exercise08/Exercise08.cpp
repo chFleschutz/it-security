@@ -3,6 +3,9 @@
 
 int primaryRepresentant(int x, int m)
 {
+	if (m == 0)
+		return x;
+
 	auto xMod = x % m;
 	return xMod < 0 ? xMod + m : xMod;
 }
@@ -23,6 +26,11 @@ int main()
 	};
 
 	std::vector<Test> test_cases;
+	test_cases.push_back({ 1, 1, 0, true });
+	test_cases.push_back({ 1, 2, 0, false });
+	test_cases.push_back({ 1, 1, 1, true });
+	test_cases.push_back({ 1, 2, 1, true });
+	test_cases.push_back({ -1, 123, 1, true });
 	test_cases.push_back({ 1, 2, 3, false });
 	test_cases.push_back({ 1, 4, 3, true });
 	test_cases.push_back({ 1, 5, 3, false });
