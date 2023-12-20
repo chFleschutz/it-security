@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Exercise08Prime", "Exercise
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Exercise08EuclideanAlgorithm", "Exercise08EuclideanAlgorithm\Exercise08EuclideanAlgorithm.vcxproj", "{0A61205E-05C0-4E71-A106-DBE01822255F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Exercise09RSA", "Exercise09RSA\Exercise09RSA.vcxproj", "{506D6C33-59E1-4A9D-BC46-B4B55BFD92D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -101,6 +103,14 @@ Global
 		{0A61205E-05C0-4E71-A106-DBE01822255F}.Release|x64.Build.0 = Release|x64
 		{0A61205E-05C0-4E71-A106-DBE01822255F}.Release|x86.ActiveCfg = Release|Win32
 		{0A61205E-05C0-4E71-A106-DBE01822255F}.Release|x86.Build.0 = Release|Win32
+		{506D6C33-59E1-4A9D-BC46-B4B55BFD92D9}.Debug|x64.ActiveCfg = Debug|x64
+		{506D6C33-59E1-4A9D-BC46-B4B55BFD92D9}.Debug|x64.Build.0 = Debug|x64
+		{506D6C33-59E1-4A9D-BC46-B4B55BFD92D9}.Debug|x86.ActiveCfg = Debug|Win32
+		{506D6C33-59E1-4A9D-BC46-B4B55BFD92D9}.Debug|x86.Build.0 = Debug|Win32
+		{506D6C33-59E1-4A9D-BC46-B4B55BFD92D9}.Release|x64.ActiveCfg = Release|x64
+		{506D6C33-59E1-4A9D-BC46-B4B55BFD92D9}.Release|x64.Build.0 = Release|x64
+		{506D6C33-59E1-4A9D-BC46-B4B55BFD92D9}.Release|x86.ActiveCfg = Release|Win32
+		{506D6C33-59E1-4A9D-BC46-B4B55BFD92D9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
