@@ -8,7 +8,8 @@ bool isPrime(int x)
 	if (x < 2)
 		return false;
 
-	for (int i = 2; i <= sqrt(x); i++)
+	int rootX = sqrt(x);
+	for (int i = 2; i <= rootX; i++)
 	{
 		if (x % i == 0)
 			return false;
